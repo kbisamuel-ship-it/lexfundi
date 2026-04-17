@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LexFundi — Bibliothèque numérique · Droit foncier & Histoire du droit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1f3c;
+    --navy-mid: #1a3560;
+    --blue: #1e4d8c;
+    --blue-light: #2e6fc0;
+    --silver: #c2cfe0;
+    --silver-light: #e8eef6;
+    --silver-pale: #f4f7fb;
+    --gold: #b8964a;
+    --white: #ffffff;
+    --text-dark: #0d1f3c;
+    --text-mid: #3a4f6e;
+    --text-light: #6b7f99;
+    --border: #d4dce8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Lato', sans-serif;
+    color: var(--text-dark);
+    background: var(--white);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13, 31, 60, 0.97);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(194,207,224,0.15);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-brand {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--white); letter-spacing: 0.02em;
+  }
+  .nav-brand span { color: var(--silver); font-weight: 400; font-style: italic; font-size: 1rem; margin-left: 0.5rem; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    color: var(--silver); text-decoration: none;
+    font-size: 0.85rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-toggle { display: none; background: none; border: none; color: var(--white); font-size: 1.5rem; cursor: pointer; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 60%, #1a3d6e 100%);
+    min-height: 82vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 6rem 2rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -80px; right: -80px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(46,111,192,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '§';
+    position: absolute; bottom: 2rem; right: 4rem;
+    font-family: 'Cormorant Garant', serif;
+    font-size: 18rem; font-weight: 700;
+    color: rgba(255,255,255,0.03);
+    line-height: 1; user-select: none;
+  }
+  .hero-inner { max-width: 900px; margin: 0 auto; width: 100%; position: relative; z-index: 1; }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--silver); border: 1px solid rgba(194,207,224,0.3);
+    padding: 0.3rem 0.9rem; border-radius: 2px; margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garant', serif;
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+    font-weight: 700; color: var(--white);
+    line-height: 1.15; margin-bottom: 0.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--silver); }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--silver);
+    max-width: 580px; margin: 1.2rem 0 2.5rem;
+    font-weight: 300; line-height: 1.8;
+  }
+  .hero-stats {
+    display: flex; gap: 3rem; flex-wrap: wrap;
+    border-top: 1px solid rgba(194,207,224,0.15);
+    padding-top: 2rem; margin-top: 1rem;
+  }
+  .stat-item { text-align: left; }
+  .stat-num {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 2.4rem; font-weight: 700; color: var(--white);
+    line-height: 1;
+  }
+  .stat-label { font-size: 0.78rem; color: var(--silver); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.2rem; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--gold); color: var(--white);
+    text-decoration: none; padding: 0.75rem 1.8rem;
+    font-size: 0.88rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    border-radius: 2px; transition: background 0.2s;
+  }
+  .btn-primary:hover { background: #a07830; }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    border: 1px solid rgba(194,207,224,0.4); color: var(--silver);
+    text-decoration: none; padding: 0.75rem 1.8rem;
+    font-size: 0.88rem; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase;
+    border-radius: 2px; transition: all 0.2s; margin-left: 1rem;
+  }
+  .btn-outline:hover { border-color: var(--white); color: var(--white); }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--blue-light); font-weight: 700; margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: 'Cormorant Garant', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 700; color: var(--navy);
+    line-height: 1.2; margin-bottom: 1rem;
+  }
+  .section-divider {
+    width: 48px; height: 3px; background: var(--gold);
+    margin: 1rem 0 2rem;
+  }
+  .section-intro { max-width: 640px; color: var(--text-mid); line-height: 1.8; margin-bottom: 2.5rem; }
+
+  /* PRESENTATION */
+  #presentation { background: var(--white); }
+  .pres-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+  .pres-text p { color: var(--text-mid); line-height: 1.9; margin-bottom: 1rem; }
+  .pres-card {
+    background: var(--silver-pale);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--blue);
+    border-radius: 4px; padding: 2rem;
+  }
+  .pres-card h3 {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 1.2rem; font-weight: 600; color: var(--navy);
+    margin-bottom: 1rem;
+  }
+  .pres-card ul { list-style: none; }
+  .pres-card ul li {
+    padding: 0.5rem 0; color: var(--text-mid); font-size: 0.92rem;
+    border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.6rem;
+  }
+  .pres-card ul li:last-child { border-bottom: none; }
+  .dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+
+  /* RESSOURCES */
+  #ressources { background: var(--silver-pale); }
+  .search-bar {
+    display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center;
+  }
+  .search-bar input {
+    flex: 1; min-width: 220px; padding: 0.7rem 1rem;
+    border: 1px solid var(--border); border-radius: 3px;
+    font-family: 'Lato', sans-serif; font-size: 0.92rem; color: var(--text-dark);
+    background: var(--white); outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-bar input:focus { border-color: var(--blue); }
+  .filter-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .tab-btn {
+    padding: 0.5rem 1.2rem; border: 1px solid var(--border);
+    background: var(--white); border-radius: 30px;
+    font-family: 'Lato', sans-serif; font-size: 0.82rem; font-weight: 700;
+    letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-light);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .tab-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .tab-btn.active { background: var(--blue); border-color: var(--blue); color: var(--white); }
+  .resources-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.2rem;
+  }
+  .resource-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 6px; padding: 1.4rem 1.6rem;
+    transition: box-shadow 0.2s, transform 0.2s;
+    cursor: pointer; position: relative;
+  }
+  .resource-card:hover { box-shadow: 0 4px 20px rgba(13,31,60,0.1); transform: translateY(-2px); }
+  .rc-type {
+    display: inline-block; font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.2rem 0.6rem; border-radius: 2px; margin-bottom: 0.8rem;
+  }
+  .rc-type.article { background: #e8f0fb; color: var(--blue); }
+  .rc-type.memoire { background: #e8f7ee; color: #1a6b3a; }
+  .rc-type.these { background: #fef3e2; color: #8a5a00; }
+  .rc-title {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 1.08rem; font-weight: 600; color: var(--navy);
+    line-height: 1.35; margin-bottom: 0.5rem;
+  }
+  .rc-author { font-size: 0.82rem; color: var(--text-light); margin-bottom: 0.3rem; }
+  .rc-year { font-size: 0.78rem; color: var(--text-light); }
+  .rc-link {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    margin-top: 0.8rem; font-size: 0.8rem; font-weight: 700;
+    color: var(--blue-light); text-decoration: none; letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .rc-link:hover { color: var(--navy); text-decoration: underline; }
+  .rc-link svg { width: 13px; height: 13px; }
+  .no-results { text-align: center; color: var(--text-light); padding: 3rem; grid-column: 1 / -1; }
+
+  /* RECHERCHE */
+  #recherche { background: var(--white); }
+  .research-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+  .research-card {
+    border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+  }
+  .rc-head { background: var(--navy); padding: 1.2rem 1.5rem; }
+  .rc-head h3 {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 1.1rem; font-weight: 600; color: var(--white); line-height: 1.3;
+  }
+  .rc-body { padding: 1.2rem 1.5rem; }
+  .rc-body p { font-size: 0.9rem; color: var(--text-mid); line-height: 1.7; }
+  .researcher-tag {
+    display: inline-block; font-size: 0.75rem;
+    background: var(--silver-pale); border: 1px solid var(--border);
+    padding: 0.2rem 0.6rem; border-radius: 2px;
+    color: var(--text-mid); margin: 0.25rem 0.1rem;
+  }
+
+  /* ACTUALITES */
+  #actualites { background: var(--silver-pale); }
+  .actu-list { display: flex; flex-direction: column; gap: 1.2rem; }
+  .actu-card {
+    background: var(--white); border: 1px solid var(--border); border-radius: 6px;
+    padding: 1.4rem 1.6rem;
+    display: grid; grid-template-columns: 100px 1fr; gap: 1.5rem; align-items: start;
+  }
+  .actu-date {
+    text-align: center; padding-top: 0.2rem;
+  }
+  .actu-day {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 2.2rem; font-weight: 700; color: var(--navy); line-height: 1;
+  }
+  .actu-month {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--text-light);
+  }
+  .actu-year { font-size: 0.72rem; color: var(--text-light); }
+  .actu-content h3 {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 1.15rem; font-weight: 600; color: var(--navy); margin-bottom: 0.3rem;
+  }
+  .actu-content p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.7; }
+  .actu-badge {
+    display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 0.15rem 0.6rem; border-radius: 2px;
+    background: #e8f0fb; color: var(--blue); margin-bottom: 0.5rem;
+  }
+
+  /* CONTACT */
+  #contact { background: var(--navy); }
+  #contact .section-title { color: var(--white); }
+  #contact .section-label { color: var(--silver); }
+  #contact .section-divider { background: var(--gold); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; align-items: start; }
+  .contact-info p { color: var(--silver); line-height: 1.8; margin-bottom: 1.5rem; font-size: 0.95rem; }
+  .contact-item {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    margin-bottom: 1rem; color: var(--silver); font-size: 0.88rem;
+  }
+  .contact-item strong { color: var(--white); display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.1rem; }
+  .contact-icon {
+    width: 32px; height: 32px; flex-shrink: 0;
+    background: rgba(194,207,224,0.1); border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--silver);
+  }
+  .contact-form-wrapper { background: rgba(255,255,255,0.04); border: 1px solid rgba(194,207,224,0.12); border-radius: 6px; padding: 2rem; }
+  .form-group { margin-bottom: 1.2rem; }
+  .form-group label { display: block; font-size: 0.78rem; color: var(--silver); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem; font-weight: 700; }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%; padding: 0.65rem 0.9rem;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(194,207,224,0.2);
+    border-radius: 3px; color: var(--white);
+    font-family: 'Lato', sans-serif; font-size: 0.9rem; outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(194,207,224,0.4); }
+  .form-group input:focus, .form-group textarea:focus { border-color: rgba(194,207,224,0.5); }
+  .form-group textarea { resize: vertical; min-height: 110px; }
+  .form-group select option { background: var(--navy); }
+  .btn-submit {
+    width: 100%; padding: 0.8rem; background: var(--gold);
+    border: none; border-radius: 3px; color: var(--white);
+    font-family: 'Lato', sans-serif; font-size: 0.88rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-submit:hover { background: #a07830; }
+
+  /* FOOTER */
+  footer {
+    background: #060f1e; padding: 2rem;
+    text-align: center; color: rgba(194,207,224,0.5);
+    font-size: 0.8rem; line-height: 1.8;
+  }
+  footer strong { color: rgba(194,207,224,0.8); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex; flex-direction: column;
+      position: absolute; top: 64px; left: 0; right: 0;
+      background: var(--navy); padding: 1rem 2rem 2rem;
+      gap: 1rem; z-index: 99;
+    }
+    .nav-toggle { display: block; }
+    .pres-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero { min-height: 70vh; }
+    .hero-stats { gap: 2rem; }
+    .actu-card { grid-template-columns: 70px 1fr; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-brand">LexFundi <span>· Droit & Histoire</span></div>
+  <div class="nav-links" id="navLinks">
+    <a href="#presentation">Présentation</a>
+    <a href="#ressources">Ressources</a>
+    <a href="#recherche">Recherche</a>
+    <a href="#actualites">Actualités</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">&#9776;</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Bibliothèque numérique académique</div>
+    <h1>LexFundi<br><em>Droit foncier &amp; Histoire du droit</em></h1>
+    <p class="hero-sub">Portail documentaire regroupant articles d'enseignants-chercheurs, mémoires et thèses consacrés au droit foncier et à l'histoire des institutions juridiques.</p>
+    <div>
+      <a href="#ressources" class="btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Consulter les ressources
+      </a>
+      <a href="#contact" class="btn-outline">Soumettre une contribution</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num" id="countArticles">—</div>
+        <div class="stat-label">Articles</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="countMemoires">—</div>
+        <div class="stat-label">Mémoires</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="countTheses">—</div>
+        <div class="stat-label">Thèses</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="countTotal">—</div>
+        <div class="stat-label">Ressources totales</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRESENTATION -->
+<section id="presentation">
+  <div class="section-inner">
+    <div class="pres-grid">
+      <div class="pres-text">
+        <div class="section-label">À propos</div>
+        <h2 class="section-title">Une bibliothèque au service de la recherche juridique africaine</h2>
+        <div class="section-divider"></div>
+        <p>LexFundi est un portail documentaire collaboratif destiné aux chercheurs, enseignants et étudiants en droit. Il centralise des ressources scientifiques consacrées au droit foncier et à l'histoire du droit, avec une attention particulière portée au contexte africain et à la Côte d'Ivoire.</p>
+        <p>Les ressources indexées — articles, mémoires et thèses — émanent d'enseignants-chercheurs affiliés à des institutions universitaires reconnues. Chaque notice renseigne l'auteur, la date, l'institution d'origine et un lien d'accès direct au document.</p>
+        <p>Ce portail est ouvert à la contribution : toute personne souhaitant soumettre un travail pour indexation peut le faire via le formulaire de contact.</p>
+      </div>
+      <div>
+        <div class="pres-card">
+          <h3>Domaines couverts</h3>
+          <ul>
+            <li><span class="dot"></span>Droit foncier coutumier et moderne</li>
+            <li><span class="dot"></span>Histoire des institutions juridiques</li>
+            <li><span class="dot"></span>Droit foncier en Afrique subsaharienne</li>
+            <li><span class="dot"></span>Régimes d'accès à la terre et réformes</li>
+            <li><span class="dot"></span>Histoire du droit méditerranéen et africain</li>
+            <li><span class="dot"></span>Droit des successions et propriété foncière</li>
+            <li><span class="dot"></span>Institutions publiques ivoiriennes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESSOURCES -->
+<section id="ressources">
+  <div class="section-inner">
+    <div class="section-label">Fonds documentaire</div>
+    <h2 class="section-title">Articles, mémoires &amp; thèses</h2>
+    <div class="section-divider"></div>
+    <p class="section-intro">Utilisez la barre de recherche et les filtres pour naviguer dans les ressources disponibles. Cliquez sur « Accéder » pour consulter le document en ligne.</p>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Rechercher par titre, auteur, mot-clé…" aria-label="Rechercher">
+      <div class="filter-tabs">
+        <button class="tab-btn active" data-filter="all">Tout</button>
+        <button class="tab-btn" data-filter="article">Articles</button>
+        <button class="tab-btn" data-filter="memoire">Mémoires</button>
+        <button class="tab-btn" data-filter="these">Thèses</button>
+      </div>
+    </div>
+
+    <div class="resources-grid" id="resourcesGrid"></div>
+  </div>
+</section>
+
+<!-- RECHERCHE -->
+<section id="recherche">
+  <div class="section-inner">
+    <div class="section-label">Axes thématiques</div>
+    <h2 class="section-title">Pôles de recherche</h2>
+    <div class="section-divider"></div>
+    <p class="section-intro">Les ressources indexées s'articulent autour de quatre axes thématiques principaux, reflétant les orientations de la recherche en droit foncier et en histoire du droit.</p>
+    <div class="research-grid">
+      <div class="research-card">
+        <div class="rc-head"><h3>Droit foncier coutumier</h3></div>
+        <div class="rc-body">
+          <p>Étude des régimes fonciers traditionnels, de leur articulation avec le droit positif et des conflits d'usages qui en découlent.</p>
+          <div style="margin-top:1rem;">
+            <span class="researcher-tag">Tenure foncière</span>
+            <span class="researcher-tag">Coutume</span>
+            <span class="researcher-tag">Pluralisme juridique</span>
+          </div>
+        </div>
+      </div>
+      <div class="research-card">
+        <div class="rc-head"><h3>Réformes foncières en Afrique</h3></div>
+        <div class="rc-body">
+          <p>Analyse comparative des politiques foncières en Afrique subsaharienne : domaine de l'État, loi rurale, certificats fonciers.</p>
+          <div style="margin-top:1rem;">
+            <span class="researcher-tag">Politique publique</span>
+            <span class="researcher-tag">Réforme agraire</span>
+            <span class="researcher-tag">Côte d'Ivoire</span>
+          </div>
+        </div>
+      </div>
+      <div class="research-card">
+        <div class="rc-head"><h3>Histoire des institutions</h3></div>
+        <div class="rc-body">
+          <p>Genèse et évolution des institutions juridiques de l'Antiquité à la période contemporaine, avec un focus sur les héritages institutionnels africains.</p>
+          <div style="margin-top:1rem;">
+            <span class="researcher-tag">Antiquité</span>
+            <span class="researcher-tag">Colonisation</span>
+            <span class="researcher-tag">Post-indépendance</span>
+          </div>
+        </div>
+      </div>
+      <div class="research-card">
+        <div class="rc-head"><h3>Droit et développement économique</h3></div>
+        <div class="rc-body">
+          <p>Relations entre ordre juridique, sécurisation foncière et développement économique. Approches Law & Development appliquées au contexte africain.</p>
+          <div style="margin-top:1rem;">
+            <span class="researcher-tag">Investissement</span>
+            <span class="researcher-tag">Sécurité juridique</span>
+            <span class="researcher-tag">OHADA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTUALITES -->
+<section id="actualites">
+  <div class="section-inner">
+    <div class="section-label">Vie académique</div>
+    <h2 class="section-title">Actualités &amp; Événements</h2>
+    <div class="section-divider"></div>
+    <div class="actu-list">
+      <div class="actu-card">
+        <div class="actu-date">
+          <div class="actu-day">25</div>
+          <div class="actu-month">Juil.</div>
+          <div class="actu-year">2026</div>
+        </div>
+        <div class="actu-content">
+          <span class="actu-badge">Appel à contributions</span>
+          <h3>Colloque AFRHID 2026 — Université d'Abomey-Calavi (Cotonou)</h3>
+          <p>Date limite de soumission des résumés : 25 juillet 2026. Axe 4 — Droit et développement économique. Les contributions traitant du droit foncier en lien avec le développement sont particulièrement encouragées.</p>
+        </div>
+      </div>
+      <div class="actu-card">
+        <div class="actu-date">
+          <div class="actu-day">15</div>
+          <div class="actu-month">Avr.</div>
+          <div class="actu-year">2026</div>
+        </div>
+        <div class="actu-content">
+          <span class="actu-badge">Mise à jour</span>
+          <h3>Lancement du portail LexFundi</h3>
+          <p>Mise en ligne du portail documentaire. Les enseignants-chercheurs et doctorants souhaitant référencer leurs travaux sont invités à utiliser le formulaire de soumission.</p>
+        </div>
+      </div>
+      <div class="actu-card">
+        <div class="actu-date">
+          <div class="actu-day">01</div>
+          <div class="actu-month">Mars</div>
+          <div class="actu-year">2026</div>
+        </div>
+        <div class="actu-content">
+          <span class="actu-badge">Ressources</span>
+          <h3>Nouvelles thèses indexées — Université FHB de Cocody</h3>
+          <p>Dix nouvelles thèses soutenues au sein de l'Université Félix Houphouët-Boigny ont été intégrées au fonds documentaire, couvrant la période 2020–2025.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="section-label">Contact &amp; Contributions</div>
+        <h2 class="section-title">Soumettre ou signaler une ressource</h2>
+        <div class="section-divider"></div>
+        <p>Vous êtes enseignant-chercheur, doctorant ou étudiant en master ? Soumettez vos travaux pour indexation sur LexFundi. Vous pouvez également signaler une ressource erronée ou un lien brisé.</p>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div>
+            <strong>Institution</strong>
+            Université Félix Houphouët-Boigny de Cocody, Abidjan — CAHDIIP
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <strong>Courriel</strong>
+            contact@lexfundi.ci &nbsp;[remplacer par votre adresse]
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <strong>Délai de traitement</strong>
+            5 à 10 jours ouvrés après réception de la soumission
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-wrapper">
+        <div class="form-group">
+          <label>Nom complet</label>
+          <input type="text" placeholder="Dr. Nom Prénom">
+        </div>
+        <div class="form-group">
+          <label>Institution</label>
+          <input type="text" placeholder="Université, faculté ou centre de recherche">
+        </div>
+        <div class="form-group">
+          <label>Courriel</label>
+          <input type="email" placeholder="votre@email.ci">
+        </div>
+        <div class="form-group">
+          <label>Type de soumission</label>
+          <select>
+            <option value="">Sélectionner…</option>
+            <option>Article scientifique</option>
+            <option>Mémoire de master</option>
+            <option>Thèse de doctorat</option>
+            <option>Signalement d'erreur</option>
+            <option>Autre demande</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Titre &amp; lien du document (URL)</label>
+          <textarea placeholder="Indiquez le titre du travail et l'URL d'accès (HAL, Cairn, dépôt institutionnel…)"></textarea>
+        </div>
+        <button class="btn-submit" type="button">Envoyer la soumission</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>LexFundi</strong> — Bibliothèque numérique · Droit foncier &amp; Histoire du droit<br>
+  Université Félix Houphouët-Boigny de Cocody · CAHDIIP · Abidjan, Côte d'Ivoire<br>
+  <span style="font-size:0.72rem; opacity:0.6; display:block; margin-top:0.5rem;">© 2026 LexFundi — Tous droits réservés · Site à personnaliser avec vos données réelles</span>
+</footer>
+
+<script>
+/* ====  DONNÉES EXEMPLES — À REMPLACER PAR VOS DONNÉES RÉELLES ==== */
+const RESOURCES = [
+  {type:"article", title:"Le droit foncier coutumier en Côte d'Ivoire face aux exigences du développement", author:"Kouadio Bi, [Prénom]", year:"2024", institution:"Univ. FHB de Cocody", url:"#"},
+  {type:"article", title:"La loi n° 98-750 du 23 décembre 1998 relative au domaine foncier rural : bilan et perspectives", author:"Nénébi Boti, Séraphin", year:"2022", institution:"Univ. FHB de Cocody", url:"#"},
+  {type:"article", title:"Réformes foncières et sécurisation des droits en Afrique subsaharienne : approche comparative", author:"Kadi Dago, Raymond", year:"2023", institution:"Univ. FHB de Cocody", url:"#"},
+  {type:"article", title:"Histoire des institutions publiques ivoiriennes de la colonisation à la IIIe République", author:"Kouame, Hermann Kouadio", year:"2021", institution:"Univ. FHB de Cocody", url:"#"},
+  {type:"article", title:"Le pluralisme juridique foncier en Afrique de l'Ouest : enjeux contemporains", author:"Auteur à compléter", year:"2020", institution:"Univ. à compléter", url:"#"},
+  {type:"article", title:"OHADA et sécurité des transactions foncières : articulations et lacunes", author:"Auteur à compléter", year:"2023", institution:"Univ. à compléter", url:"#"},
+  {type:"memoire", title:"L'accès des femmes à la terre en droit coutumier ivoirien", author:"Étudiant(e) à compléter", year:"2024", institution:"Univ. FHB de Cocody", url:"#"},
+  {type:"memoire", title:"Le régime du certificat foncier rural en Côte d'Ivoire : étude critique", author:"Étudiant(e) à compléter", year:"2023", institution:"Univ. FHB de Cocody", url:"#"},
+  {type:"memoire", title:"La propriété foncière dans les traditions juridiques hébraïques et africaines : étude comparée", author:"Étudiant(e) à compléter", year:"2025", institution:"Univ. FHB de Cocody", url:"#"},
+  {type:"these", title:"Le droit foncier rural ivoirien entre tradition et modernité : pour un système intégré", author:"Auteur à compléter", year:"2022", institution:"Univ. FHB de Cocody", url:"#"},
+  {type:"these", title:"Histoire du droit de propriété en Afrique de l'Ouest francophone : des origines précoloniales au droit positif contemporain", author:"Auteur à compléter", year:"2019", institution:"Univ. à compléter", url:"#"},
+  {type:"these", title:"Les institutions foncières dans les droits gréco-romains et leur réception en droit ivoirien", author:"Auteur à compléter", year:"2021", institution:"Univ. FHB de Cocody", url:"#"},
+];
+
+const TYPE_LABELS = { article: "Article", memoire: "Mémoire", these: "Thèse" };
+let currentFilter = "all";
+let currentSearch = "";
+
+function render() {
+  const grid = document.getElementById("resourcesGrid");
+  const filtered = RESOURCES.filter(r => {
+    const matchType = currentFilter === "all" || r.type === currentFilter;
+    const q = currentSearch.toLowerCase();
+    const matchSearch = !q || r.title.toLowerCase().includes(q) || r.author.toLowerCase().includes(q) || r.institution.toLowerCase().includes(q);
+    return matchType && matchSearch;
+  });
+  if (!filtered.length) {
+    grid.innerHTML = '<p class="no-results">Aucune ressource ne correspond à votre recherche.</p>';
+    return;
+  }
+  grid.innerHTML = filtered.map(r => `
+    <div class="resource-card">
+      <span class="rc-type ${r.type}">${TYPE_LABELS[r.type]}</span>
+      <div class="rc-title">${r.title}</div>
+      <div class="rc-author">${r.author}</div>
+      <div class="rc-year">${r.institution} · ${r.year}</div>
+      <a href="${r.url}" class="rc-link" target="_blank" rel="noopener">
+        Accéder
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  `).join("");
+}
+
+function updateStats() {
+  document.getElementById("countArticles").textContent = RESOURCES.filter(r => r.type === "article").length;
+  document.getElementById("countMemoires").textContent = RESOURCES.filter(r => r.type === "memoire").length;
+  document.getElementById("countTheses").textContent = RESOURCES.filter(r => r.type === "these").length;
+  document.getElementById("countTotal").textContent = RESOURCES.length;
+}
+
+document.getElementById("searchInput").addEventListener("input", function() {
+  currentSearch = this.value;
+  render();
+});
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    this.classList.add("active");
+    currentFilter = this.dataset.filter;
+    render();
+  });
+});
+
+document.getElementById("navToggle").addEventListener("click", function() {
+  document.getElementById("navLinks").classList.toggle("open");
+});
+
+document.querySelector(".btn-submit").addEventListener("click", function() {
+  alert("Fonctionnalité de soumission à connecter à votre serveur ou service de messagerie.");
+});
+
+updateStats();
+render();
+</script>
+</body>
+</html>
